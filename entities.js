@@ -15,7 +15,7 @@ tile_azul: {sx: 160, sy: 226, w: 40, h: 48, frames: 1},
 tile_verde: {sx: 97, sy: 224, w: 40, h: 48, frames: 1},
 tile_negro: {sx: 221, sy: 224, w: 58, h: 58, frames: 1},
 tortuga: {sx: 5, sy: 288, w: 51, h: 48, frames: 1},
-rana: {sx: 0, sy: 339, w: 40, h: 48, frames: 7}
+rana: {sx: 0, sy: 340, w: 40, h: 48, frames: 1}
 };
 
 var OBJECT_PLAYER = 1,
