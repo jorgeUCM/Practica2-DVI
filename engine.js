@@ -41,15 +41,13 @@ var Game = new function() {
     },false);
   }
 
-
+  
   var boards = [];
-
-  //var fps = 45;
   var toSkip = 0;
   var skip = toSkip;
   var oldtimestamp = 0;
   this.loop = function(timestamp) { 
-    //var dt = analytics.getDT();
+
     if(skip>0){
       --skip;
     }
@@ -77,60 +75,42 @@ var Game = new function() {
     }
     requestAnimationFrame(Game.loop);
 
-    //setTimeout(Game.loop,0);
-
-    //var dtstep = analytics.getDT()*1000;
-    //console.log(dtstep);
-    //setTimeout(Game.loop, 1000/fps - dtstep);
   };
 
   
+
+
   // Change an active game board
-  this.setBoard = function(num,board) { boards[num] = board; };
+ this.setBoard = function(num,board) { boards[num] = board; };
 };
 
 
-
-
 var analytics = new function(){
-
   var lastDate = Date.now();
-  this.getDT = function(){
-    var now = Date.now();
-    var dt = (now-lastDate)/1000;
-    lastDate = now;
-    return dt;
-  }
-
   var time = 0;
   var frames = 0;
   var fps = 0;
   this.step = function(dt){
-    time += dt;
-    ++frames;
-
-    if(time > 1.0)
-    {
-       fps = frames / time;
-       frames = 0;
-       time = 0;
-    }
+  var now = Date.now();
+  //Ignoramos el dt que nos indica el método loop()
+  var dt = (now-lastDate);
+  lastDate = now;
+  time += dt;
+  ++frames;
+  fps = frames*1000 / time ;
+  if(time>5000)
+  {
+  time = 0;
+  frames = 0;
   }
-
-  this.draw =  function(ctx){
-    ctx.fillStyle = "#FFFFFF";
-    ctx.textAlign = "left";
-
-    ctx.font = "bold 16px arial";
-    ctx.fillText(Math.round(fps),0,20);
   }
-}
-
-
-
-
-
-
+  this.draw = function(ctx){
+  ctx.fillStyle = "#FFFFFF";
+  ctx.textAlign = "left";
+  ctx.font = "bold 16px arial";
+  ctx.fillText(Math.round(fps * 100) / 100,0,20);
+  }
+  }
 
 ///////// SPRITESHEET
 
