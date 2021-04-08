@@ -13,10 +13,7 @@ var Game = new function() {
       return alert("Please upgrade your browser to play"); }
 
     this.setupInput();
-
-    //this.loop(); 
-    //setInterval(this.loop, 1000/fps);
-    requestAnimationFrame(Game.loop);
+    requestAnimationFrame(this.loop);
 
 
     SpriteSheet.load(sprite_data,callback);
