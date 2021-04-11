@@ -8,8 +8,8 @@ var level1 = [
    [ 0, 1000, 'tronco_pequeño', 1 ],
    [ 0, 2000, 'tronco_mediano', 1 ],
    [ 0, 2000, 'tronco_grande', 1 ],
-   [ 0, 100, 'tortuga', 2, {x: 0, y: 92, V: 100, D: 1}],
-   [ 0, 100, 'tortuga', 2 , {x: 0, y: 190, V: 180, D: 1}]
+   [ 0, 100, 'tortuga1', 2],
+   [ 0, 100, 'tortuga2', 2]
  ];
  
  var Level = function(levelData,callback) {

@@ -1,4 +1,5 @@
 
+//Todos los sprites que vamos a utilizar
 var sprites = {
 titulo: {sx: 8, sy: 395, w: 411, h: 161, frames: 1},
 fondo: {sx: 421, sy: 0, w: 550, h: 624, frames: 1},
@@ -14,7 +15,8 @@ calaveras: {sx: 211, sy: 128, w: 48, h: 35, frames: 4},
 tile_azul: {sx: 160, sy: 226, w: 40, h: 48, frames: 1},
 tile_verde: {sx: 97, sy: 224, w: 40, h: 48, frames: 1},
 tile_negro: {sx: 221, sy: 224, w: 58, h: 58, frames: 1},
-tortuga: {sx: 5, sy: 288, w: 51, h: 48, frames: 1},
+tortuga1: {sx: 5, sy: 288, w: 51, h: 48, frames: 1}, //Hay 2 tortugas diferentes con el mismo sprite
+tortuga2: {sx: 5, sy: 288, w: 51, h: 48, frames: 1},
 rana: {sx: 120, sy: 340, w: 40, h: 48, frames: 1}
 };
 
@@ -68,7 +70,7 @@ Fondo.prototype = new Sprite();
 
 //Clase de la rana
 var Frog = function() {
-  this.setup('rana', {vx: 0, vy: 0, maxVel: 48, jumpStep: 0.12, frame: 0, angle: 0});
+  this.setup('rana', {vx: 0, vy: 0, maxVel: 48, jumpStep: 0.12, frame: 0});
 
   this.x = Game.width / 2 - this.w / 2;
   this.y = game.height - this.h;
@@ -85,7 +87,7 @@ var Frog = function() {
     var auxX = this.x;
     var auxY = this.y;
 
-    //Movimientos
+    //Movimiento izquierda
     if(Game.keys['left'] && this.jumpTime < 0) {
     
       auxX += -40;
@@ -95,6 +97,7 @@ var Frog = function() {
         
       }
     }
+    //Movimiento derecha
     else if(Game.keys['right'] && this.jumpTime < 0) {
      
       auxX += 40;
@@ -105,6 +108,7 @@ var Frog = function() {
         
       }
     }
+    //Movimiento arriba
     else if(Game.keys['up'] && this.jumpTime < 0) {
     
       auxY += -48;
@@ -114,6 +118,7 @@ var Frog = function() {
        
       }
     }
+    //Movimiento abajo
     else if(Game.keys['down'] && this.jumpTime < 0) {
     
       auxY += 48;
@@ -126,7 +131,7 @@ var Frog = function() {
     else { this.vx = 0; this.vy = 0; }
 
 
-    //Comprobamos que colisione con el tronco
+    //Comprobamos las colisiones con troncos o tortugas y ajustamos la velocidad de la rana acorde con la de cada entidad
     var tronco_collide = this.board.collide(this, OBJECT_TRONCO);
     var tortuga_collide = this.board.collide(this, OBJECT_TORTUGA);
     if(tronco_collide.sprite == 'tronco_pequeño') {
@@ -141,9 +146,14 @@ var Frog = function() {
       this.onTrunk = true;
       this.vx = troncos.tronco_grande.V * troncos.tronco_grande.D;
     }
-    else if(tortuga_collide.sprite == 'tortuga') {
+    else if(tortuga_collide.sprite == 'tortuga1') {
       this.onTurtle = true;
-      this.vx = tortugas.tortuga.V * tortugas.tortuga.D;
+      this.vx = tortugas.tortuga1.V * tortugas.tortuga1.D;
+    }
+    else if(tortuga_collide.sprite == 'tortuga2') {
+      this.onTurtle = true;
+      this.vx = tortugas.tortuga2.V * tortugas.tortuga2.D;
+    
     }
     else {
       this.onTrunk = false;
@@ -167,8 +177,9 @@ Frog.prototype.draw = function(ctx) {
   ctx.restore();
 }
 
-Frog.prototype.hit = function() {
-  if(!this.onTrunk && !this.onTurtle && this.board.remove(this)){
+Frog.prototype.hit = function() {//En caso de colisionar con agua o vehiculo y no estar en un tronco o en una tortuga se llama a esta funcion que llama a death
+  if(!this.onTrunk && !this.onTurtle){
+    this.board.remove(this);
     this.board.add(new Death(this.x + this.w/2, this.y + this.h/2));
   }
 }
@@ -176,8 +187,9 @@ Frog.prototype.hit = function() {
 
 //Clase de las tortugas
 
-var tortugas = { //instanciamos la variable con datos de
-  tortuga:    {x: 0, y: 0, sprite: 'tortuga', V: 0, D: 0}
+var tortugas = { 
+  tortuga1:    {x: 0, y: 190, sprite: 'tortuga1',V: 180, D: 1},
+  tortuga2:   {x: 0, y: 92, sprite: 'tortuga2', V: 100, D: 1}
 };
 
 var Tortuga = function(blueprint, override) {
@@ -224,16 +236,13 @@ Tronco.prototype.step = function(dt) {
    }
  }
 
-//////////////////////////////////////////////////////////
-/// COCHES
-//////////////////////////////////////////////////////////
-
+//Clase de los vehiculos
 var vehiculos = {
   coche_azul:       { x: 550,   y: 529, sprite: 'coche_azul',     V: 100, D: -1 },
-  coche_verde:      { x: -50,   y: 481, sprite: 'coche_verde',    V: 70,  D: 1 },
+  coche_verde:      { x: 0,   y: 481, sprite: 'coche_verde',    V: 70,  D: 1 },
   camion_grande:    { x: 550,   y: 433, sprite: 'camion_grande',  V: 65,  D:-1 }, 
-  coche_amarillo:   { x: -50,   y: 337, sprite: 'coche_amarillo', V: 250, D: 1 },
-  camion_bomberos:  { x: -50,   y: 385, sprite: 'camion_bomberos',V: 105, D: 1 }
+  coche_amarillo:   { x: 0,   y: 337, sprite: 'coche_amarillo', V: 250, D: 1 },
+  camion_bomberos:  { x: 0,   y: 385, sprite: 'camion_bomberos',V: 105, D: 1 }
  
 };
 
@@ -262,20 +271,16 @@ Vehiculo.prototype.step = function(dt) {
 
 //Clase para la muerte
 var Death = function(centerX,centerY) {
-  this.setup('calaveras', { frame: 0 });
+  this.setup('calaveras');
   this.x = centerX - this.w/2;
   this.y = centerY - this.h/2;
-  this.subFrame = 0;
+ 
 };
 
 Death.prototype = new Sprite();
 
 Death.prototype.step = function(dt) {
-  this.frame = Math.floor(this.subFrame++ / 10);
-  if(this.subFrame >= 40) {
-      this.board.remove(this);
-      loseGame();
-  }
+  loseGame();
 };
 
 //Clase para el agua
