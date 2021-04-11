@@ -15,7 +15,7 @@ tile_azul: {sx: 160, sy: 226, w: 40, h: 48, frames: 1},
 tile_verde: {sx: 97, sy: 224, w: 40, h: 48, frames: 1},
 tile_negro: {sx: 221, sy: 224, w: 58, h: 58, frames: 1},
 tortuga: {sx: 5, sy: 288, w: 51, h: 48, frames: 1},
-rana: {sx: 0, sy: 340, w: 40, h: 48, frames: 1}
+rana: {sx: 120, sy: 340, w: 40, h: 48, frames: 1}
 };
 
 var OBJECT_PLAYER = 1,
@@ -26,7 +26,8 @@ var OBJECT_PLAYER = 1,
     OBJECT_HOME = 64;
 
 
-/// CLASE PADRE SPRITE
+// Creamos un nuevo objeto Sprite que servirá de prototipo a los distintos tipos de entidades:
+
 var Sprite = function()  
  { }
 
@@ -49,9 +50,6 @@ Sprite.prototype.draw = function(ctx) {
   SpriteSheet.draw(ctx,this.sprite,this.x,this.y,this.frame);
 }
 
-Sprite.prototype.hit = function(damage) {
-  this.board.remove(this);
-}
 
 
 /////////////////////////////////////////////////////////
@@ -79,7 +77,6 @@ var Frog = function() {
   this.x = Game.width / 2 - this.w / 2;
   this.y = game.height - this.h;
   this.jumpTime = this.jumpStep;
-  this.subFrame = 0;
   this.onTrunk = false;
   this.onTurtle = false;
 
@@ -92,59 +89,46 @@ var Frog = function() {
     var auxX = this.x;
     var auxY = this.y;
 
-    //Variable que controla si se puede ejecutar la animación
-    var animation = false;
-
-    if(this.x < 15) this.x = 15;
-    else if(this.x > Game.width - this.w / 2 - 15) this.x = Game.width - this.w / 2 - 15;
-
     //Movimientos
     if(Game.keys['left'] && this.jumpTime < 0) {
-      this.angle = -90;
+    
       auxX += -40;
       if(auxX > 0) {
         this.x += -40;
         this.jumpTime = this.jumpStep;
-        this.animation = true;
+        
       }
     }
     else if(Game.keys['right'] && this.jumpTime < 0) {
-      this.angle = 90;
+     
       auxX += 40;
       if(auxX < Game.width - this.w / 2) {
         this.x += 40;
         this.jumpTime = this.jumpStep;
-        this.animation = true;
+      
         
       }
     }
     else if(Game.keys['up'] && this.jumpTime < 0) {
-      this.angle = 0;
+    
       auxY += -48;
       if(auxY >= 0) {
         this.y += -this.maxVel;
         this.jumpTime = this.jumpStep;
-        this.animation = true;
+       
       }
     }
     else if(Game.keys['down'] && this.jumpTime < 0) {
-      this.angle = 180;
+    
       auxY += 48;
       if(auxY < Game.height) {
         this.y += 48;
         this.jumpTime = this.jumpStep;
-        this.animation = true;
+     
       }
     }
     else { this.vx = 0; this.vy = 0; }
 
-    if(this.animation) {
-      this.frame = Math.floor(this.subFrame++ / 2);
-      if(this.subFrame > 12) {
-        this.subFrame = 0;
-        this.animation = false;
-      }
-    }
 
     //Comprobamos que colisione con el tronco
     var collision = this.board.collide(this, OBJECT_TRONCO);
@@ -202,14 +186,13 @@ Frog.prototype.hit = function() {
 //////////////////////////////////////////////////////////
 
 var tortugas = {
-  tortuga:    {x: -40, y: 196, sprite: 'tortuga', V: 100, D: 1, frame: 0}
+  tortuga:    {x: -40, y: 196, sprite: 'tortuga', V: 120, D: 1, frame: 0}
 };
 
 var Tortuga = function(blueprint, override) {
   this.merge(this.baseParameters);
   this.setup(blueprint.sprite,blueprint);
   this.merge(override);
-  this.subFrame = 0;
 }
 
 Tortuga.prototype = new Sprite();
@@ -223,11 +206,6 @@ Tortuga.prototype.step = function(dt) {
    if(this.x < -this.w || this.x > Game.width) {
         this.board.remove(this);
    }
-
-   this.frame = Math.floor(this.subFrame++ / 9);
-   if(this.subFrame > 36) {
-     this.subFrame = 0;
-   }
  }
 
 //////////////////////////////////////////////////////////
@@ -235,8 +213,8 @@ Tortuga.prototype.step = function(dt) {
 //////////////////////////////////////////////////////////
 
 var troncos = {
-  tronco_pequeño:      { x: 550,   y: 240, sprite: 'tronco_pequeño', V: 100, D:-1 },
-  tronco_mediano:      { x: 550,   y: 144, sprite: 'tronco_mediano', V: 70 , D:-1 },
+  tronco_pequeño:      { x: 550,   y: 240, sprite: 'tronco_pequeño', V: 80, D:-1 },
+  tronco_mediano:      { x: 550,   y: 144, sprite: 'tronco_mediano', V: 120 , D:-1 },
   tronco_grande:       { x: 550,   y:  48, sprite: 'tronco_grande' , V: 150, D:-1 }
 };
 

@@ -32,7 +32,7 @@ var playGame = function() {
     capa2_juego.add(new Home(fin * 40, 1));
   }
   
-  capa2_juego.add(new Spawner(level1,winGame));
+  capa2_juego.add(new Level(level1,winGame));
 
   capa2_juego.add(new Frog());
 
