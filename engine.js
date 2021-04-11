@@ -137,7 +137,7 @@ var SpriteSheet = new function() {
 
 
 
-//// TITLE
+//Titulo
 
 var TitleScreen = function TitleScreen(title,subtitle,callback) {
   var up = false;
@@ -160,11 +160,7 @@ var TitleScreen = function TitleScreen(title,subtitle,callback) {
   };
 };
 
-
-///////////////
-// GameBoard
-////////////////
-
+//Tablero
 
 var GameBoard = function() {
   var board = this;

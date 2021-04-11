@@ -23,10 +23,10 @@ var OBJECT_PLAYER = 1,
     OBJECT_TRONCO = 4,
     OBJECT_TORTUGA = 8,
     OBJECT_AGUA = 16,
-    OBJECT_HOME = 64;
+    OBJECT_HOME = 32;
 
 
-// Creamos un nuevo objeto Sprite que servirá de prototipo a los distintos tipos de entidades:
+//Clase padre Sprite
 
 var Sprite = function()  
  { }
@@ -52,9 +52,7 @@ Sprite.prototype.draw = function(ctx) {
 
 
 
-/////////////////////////////////////////////////////////
-//FONDO
-/////////////////////////////////////////////////////////
+//Fondo del juego
 
 var Fondo = function() {
   this.setup('fondo');
@@ -67,10 +65,8 @@ var Fondo = function() {
 
 Fondo.prototype = new Sprite();
 
-/////////////////////////////////////////////////////////
-//RANA
-/////////////////////////////////////////////////////////
 
+//Clase de la rana
 var Frog = function() {
   this.setup('rana', {vx: 0, vy: 0, maxVel: 48, jumpStep: 0.12, frame: 0, angle: 0});
 
@@ -131,21 +127,21 @@ var Frog = function() {
 
 
     //Comprobamos que colisione con el tronco
-    var collision = this.board.collide(this, OBJECT_TRONCO);
-    var collision2 = this.board.collide(this, OBJECT_TORTUGA);
-    if(collision.sprite == 'tronco_pequeño') {
+    var tronco_collide = this.board.collide(this, OBJECT_TRONCO);
+    var tortuga_collide = this.board.collide(this, OBJECT_TORTUGA);
+    if(tronco_collide.sprite == 'tronco_pequeño') {
       this.onTrunk = true;
       this.vx = troncos.tronco_pequeño.V * troncos.tronco_pequeño.D;
     }
-    else if(collision.sprite == 'tronco_mediano') {
+    else if(tronco_collide.sprite == 'tronco_mediano') {
       this.onTrunk = true;
       this.vx = troncos.tronco_mediano.V * troncos.tronco_mediano.D;
     }
-    else if(collision.sprite == 'tronco_grande') {
+    else if(tronco_collide.sprite == 'tronco_grande') {
       this.onTrunk = true;
       this.vx = troncos.tronco_grande.V * troncos.tronco_grande.D;
     }
-    else if(collision2.sprite == 'tortuga') {
+    else if(tortuga_collide.sprite == 'tortuga') {
       this.onTurtle = true;
       this.vx = tortugas.tortuga.V * tortugas.tortuga.D;
     }
@@ -164,11 +160,8 @@ Frog.prototype = new Sprite();
 Frog.prototype.type = OBJECT_PLAYER;
 Frog.prototype.draw = function(ctx) {
   var s = SpriteSheet.map[this.sprite];
-  if(!this.frame) this.frame = 0;
-  rotation = this.angle * Math.PI / 180;
   ctx.save();
   ctx.translate(this.x + s.w / 2, this.y + s.h / 2);
-  ctx.rotate(rotation);
   ctx.drawImage(SpriteSheet.image, s.sx + this.frame * s.w, s.sy, s.w, s.h, 
        -s.w / 2, -s.h / 2, s.w, s.h);
   ctx.restore();
@@ -181,12 +174,10 @@ Frog.prototype.hit = function() {
 }
 
 
-//////////////////////////////////////////////////////////
-/// TORTUGAS
-//////////////////////////////////////////////////////////
+//Clase de las tortugas
 
-var tortugas = {
-  tortuga:    {x: -40, y: 196, sprite: 'tortuga', V: 120, D: 1, frame: 0}
+var tortugas = { //instanciamos la variable con datos de
+  tortuga:    {x: 0, y: 0, sprite: 'tortuga', V: 0, D: 0}
 };
 
 var Tortuga = function(blueprint, override) {
@@ -208,14 +199,11 @@ Tortuga.prototype.step = function(dt) {
    }
  }
 
-//////////////////////////////////////////////////////////
-/// TRONCOS
-//////////////////////////////////////////////////////////
-
+//Clase de los troncos
 var troncos = {
-  tronco_pequeño:      { x: 550,   y: 240, sprite: 'tronco_pequeño', V: 80, D:-1 },
-  tronco_mediano:      { x: 550,   y: 144, sprite: 'tronco_mediano', V: 120 , D:-1 },
-  tronco_grande:       { x: 550,   y:  48, sprite: 'tronco_grande' , V: 150, D:-1 }
+  tronco_pequeño:      { x: 550,   y: 248, sprite: 'tronco_pequeño', V: 80, D:-1 },
+  tronco_mediano:      { x: 0,   y: 150, sprite: 'tronco_mediano', V: 120 , D:1 },
+  tronco_grande:       { x: 0,   y:  48, sprite: 'tronco_grande' , V: 110, D:1 }
 };
 
 var Tronco = function(blueprint) {
@@ -241,11 +229,12 @@ Tronco.prototype.step = function(dt) {
 //////////////////////////////////////////////////////////
 
 var vehiculos = {
-  coche_azul:       { x: -50,   y: 528, sprite: 'coche_azul',     V: 100, D: 1 },
-  coche_verde:      { x: -50,   y: 480, sprite: 'coche_verde',    V: 70,  D: 1 },
-  coche_amarillo:   { x: -50,   y: 336, sprite: 'coche_amarillo', V: 150, D: 1 },
-  camion_bomberos:  { x: -50,   y: 384, sprite: 'camion_bomberos',V: 105, D: 1 },
-  camion_grande:    { x: 550,   y: 432, sprite: 'camion_grande',  V: 65,  D:-1 }   
+  coche_azul:       { x: 550,   y: 529, sprite: 'coche_azul',     V: 100, D: -1 },
+  coche_verde:      { x: -50,   y: 481, sprite: 'coche_verde',    V: 70,  D: 1 },
+  camion_grande:    { x: 550,   y: 433, sprite: 'camion_grande',  V: 65,  D:-1 }, 
+  coche_amarillo:   { x: -50,   y: 337, sprite: 'coche_amarillo', V: 250, D: 1 },
+  camion_bomberos:  { x: -50,   y: 385, sprite: 'camion_bomberos',V: 105, D: 1 }
+ 
 };
 
 var Vehiculo = function(blueprint, override) {
@@ -266,14 +255,12 @@ Vehiculo.prototype.step = function(dt) {
         this.board.remove(this);
    }
 
-  var collision = this.board.collide(this,OBJECT_PLAYER);
-    if(collision)
-      collision.hit();
+  var vehiculo_collide = this.board.collide(this,OBJECT_PLAYER);
+    if(vehiculo_collide)
+      vehiculo_collide.hit();
 }
 
-//////////////////////////////////////////////////////////
-/// MUERTE
-//////////////////////////////////////////////////////////
+//Clase para la muerte
 var Death = function(centerX,centerY) {
   this.setup('calaveras', { frame: 0 });
   this.x = centerX - this.w/2;
@@ -291,18 +278,16 @@ Death.prototype.step = function(dt) {
   }
 };
 
-//////////////////////////////////////////////////////////
-/// AGUA
-//////////////////////////////////////////////////////////
+//Clase para el agua
 var Water = function(centerX, centerY) {
   this.setup('tile_azul');
   this.x = centerX;
   this.y = centerY;
 
   this.step = function(dt){
-    var collision = this.board.collide(this,OBJECT_PLAYER);
-    if(collision) {
-      collision.hit();
+    var agua_collide = this.board.collide(this,OBJECT_PLAYER);
+    if(agua_collide) {
+      agua_collide.hit();
     }
   }
 };
@@ -311,17 +296,15 @@ Water.prototype = new Sprite();
 Water.prototype.type = OBJECT_AGUA;
 Water.prototype.draw = function(ctx) {}
 
-//////////////////////////////////////////////////////////
-/// HOME
-//////////////////////////////////////////////////////////
+//Clase para la meta
 var Home = function(centerX, centerY) {
   this.setup('tile_verde');
   this.x = centerX;
   this.y = centerY;
 
   this.step = function(dt){
-    var collision = this.board.collide(this, OBJECT_PLAYER);
-    if(collision) {
+    var home_collide = this.board.collide(this, OBJECT_PLAYER);
+    if(home_collide) {
       winGame();
     }
   }
@@ -331,9 +314,7 @@ Home.prototype = new Sprite();
 Home.prototype.type = OBJECT_HOME;
 Home.prototype.draw = function(ctx) {}
 
-/////////////////////////////////////////////////////////
-/// TÍTULO
-/////////////////////////////////////////////////////////
+//Clase para el titulo
 var Title = function() {
   this.setup('titulo');
 
