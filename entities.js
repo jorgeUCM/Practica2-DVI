@@ -210,22 +210,22 @@ Tortuga.prototype.step = function(dt) {
  }
 
 //Clase de los troncos
-var troncos = {
+var trunks = {
   tronco_p:      { x: 550,   y: 248, sprite: 'tronco_p', V: 80, D:-1 },//Tronco pequeño
   tronco_m:      { x: 0,   y: 150, sprite: 'tronco_m', V: 120 , D:1 },//Tronco mediano
   tronco_g:       { x: 0,   y:  48, sprite: 'tronco_g' , V: 110, D:1 }//Tronco grande
 };
 
-var Tronco = function(blueprint) {
+var Trunk = function(blueprint) {
   this.merge(this.baseParameters);
   this.setup(blueprint.sprite,blueprint);
 }
 
-Tronco.prototype = new Sprite();
-Tronco.prototype.baseParameters = { V: 0, D: 0,};
-Tronco.prototype.type = OBJECT_TRONCO;
+Trunk.prototype = new Sprite();
+Trunk.prototype.baseParameters = { V: 0, D: 0,};
+Trunk.prototype.type = OBJECT_TRONCO;
 
-Tronco.prototype.step = function(dt) {
+Trunk.prototype.step = function(dt) {
 
   this.vx = this.V*this.D;
   this.x += this.vx*dt;
@@ -235,7 +235,7 @@ Tronco.prototype.step = function(dt) {
  }
 
 //Clase de los vehiculos
-var vehiculos = {
+var cars = {
   coche_a:       { x: 550,   y: 529, sprite: 'coche_a',     V: 100, D: -1 },//Coche azul
   coche_v:      { x: 0,   y: 481, sprite: 'coche_v',    V: 70,  D: 1 },//Coche verde
   camion_g:    { x: 550,   y: 433, sprite: 'camion_g',  V: 65,  D:-1 }, //Camión grande
@@ -244,17 +244,17 @@ var vehiculos = {
  
 };
 
-var Vehiculo = function(blueprint, override) {
+var Car = function(blueprint, override) {
   this.merge(this.baseParameters);
   this.setup(blueprint.sprite,blueprint);
   this.merge(override);
 }
 
-Vehiculo.prototype = new Sprite();
-Vehiculo.prototype.baseParameters = { V: 0, D: 0,};
-Vehiculo.prototype.type = OBJECT_VEHICULO;
+Car.prototype = new Sprite();
+Car.prototype.baseParameters = { V: 0, D: 0,};
+Car.prototype.type = OBJECT_VEHICULO;
 
-Vehiculo.prototype.step = function(dt) {
+Car.prototype.step = function(dt) {
 
   this.vx = this.V*this.D;
   this.x += this.vx*dt;

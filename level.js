@@ -31,15 +31,15 @@ var level1 = [
          (entity[0] < this.t + 2000)) {
        // Get the enemy definition blueprint
         if (entity[3] == 0){
-          var vehiculo = vehiculos[entity[2]];
+          var vehiculo = cars[entity[2]];
           var override = entity[4];
-          this.board.add(new Vehiculo(vehiculo, override));
+          this.board.add(new Car(vehiculo, override));
           entity[0] += entity[1];
         }
         else if (entity[3] == 1){
-          var tronco = troncos[entity[2]];
+          var tronco = trunks[entity[2]];
           var override = entity[4];
-          this.board.add(new Tronco(tronco));
+          this.board.add(new Trunk(tronco));
           entity[0] += entity[1];
         }else if (entity[3] == 2){
           var tortuga = tortugas[entity[2]];
