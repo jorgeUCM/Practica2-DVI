@@ -112,7 +112,6 @@ var analytics = new function(){
   }
   }
 
-///////// SPRITESHEET
 
 var SpriteSheet = new function() {
   this.map = { }; 

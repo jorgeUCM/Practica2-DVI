@@ -32,9 +32,9 @@ var playGame = function() {
     capa2_juego.add(new Home(fin * 40, 1));
   }
   
-  capa2_juego.add(new Level(level1,winGame));
+  capa2_juego.add(new Level(level1,winGame));  // añadimos el spawn de las entidades
 
-  capa2_juego.add(new Frog());
+  capa2_juego.add(new Frog());//por ultimo añadimos la rana
 
   Game.setBoard(3, capa2_juego);
 }

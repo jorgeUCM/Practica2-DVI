@@ -1,13 +1,13 @@
 var level1 = [
   // Start,  Gap,  Type,   Enemy
-   [ 0, 4000, 'coche_azul', 0 ],
-   [ 0, 2500, 'coche_verde', 0 ],
-   [ 0, 100, 'coche_amarillo', 0],
-   [ 0, 5000, 'camion_bomberos', 0 ],
-   [ 0, 6000, 'camion_grande', 0 ],
-   [ 0, 1000, 'tronco_pequeño', 1 ],
-   [ 0, 2000, 'tronco_mediano', 1 ],
-   [ 0, 2000, 'tronco_grande', 1 ],
+   [ 0, 4000, 'coche_a', 0 ],
+   [ 0, 2500, 'coche_v', 0 ],
+   [ 0, 100, 'coche_am', 0],
+   [ 0, 5000, 'camion_b', 0 ],
+   [ 0, 6000, 'camion_g', 0 ],
+   [ 0, 1000, 'tronco_p', 1 ],
+   [ 0, 2000, 'tronco_m', 1 ],
+   [ 0, 2000, 'tronco_g', 1 ],
    [ 0, 100, 'tortuga1', 2],
    [ 0, 100, 'tortuga2', 2]
  ];
